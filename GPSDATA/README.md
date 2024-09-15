@@ -1,4 +1,4 @@
-# Zapis z gps na kartę SD
+# Odczyt danych z czujnika GPS
 
 ## Komponenty:
 * Arduino Uno
