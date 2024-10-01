@@ -257,7 +257,7 @@ String getJsonWeather(){
   weatherS+=",";
 
   
-  weatherS+= "\Wather sensorIN = ";
+  weatherS+= "\"Wather sensorIN\": ";
   weatherS+= watherSensor;
 
   weatherS+="}";
