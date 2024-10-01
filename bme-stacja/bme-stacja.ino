@@ -74,6 +74,10 @@ void setup() {
   Serial.println("WiFi connected.");
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
+  if(WiFi.localIP().toString()!="192.168.101.230")
+  {
+    ESP.restart();
+  }
 
 server.on("/",[](){server.send(200,"text/plain",getWeather());});
 server.on("/json",[](){server.send(200,"text/plain",getJsonWeather());});
