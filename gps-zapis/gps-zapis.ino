@@ -15,7 +15,7 @@ const int ledredPin = 7;    // the number of the LED pin
 
 
 int buttonState = 0; 
-
+String gpsDataText ="";
 
 const int chipSelect = 10;
 
@@ -69,18 +69,18 @@ void loop() {
 
   if(raz){
     delay(500);
-    file = SD.open("file.txt", FILE_WRITE);
+    //file = SD.open("file.txt", FILE_WRITE);
     delay(500);
     raz=false;
   }
   // put your main code here, to run repeatedly:
   buttonState = digitalRead(buttonPin);
-  if (buttonState == LOW) {
+  if (buttonState == HIGH) {
     
     digitalWrite(ledgreenPin, HIGH);
     digitalWrite(ledredPin, LOW);
 
-   
+   file = SD.open("file.txt", FILE_WRITE);
   
   if (file) {
     
@@ -92,7 +92,15 @@ void loop() {
       
       
       file.write(gpsData);
+      gpsDataText+=(char)gpsData;
+      
       }
+      file.close();
+      gpsDataText.trim();
+  if (gpsDataText.length() > 0) {  // trim() usuwa białe znaki (spacje, nowe linie)
+    Serial.println(gpsDataText);  // Wyświetla zebrane dane GPS w postaci tekstu
+  }
+      gpsDataText="";
     }
    else {
     Serial.println("Could not open file (writing).");
@@ -101,13 +109,12 @@ void loop() {
   }
   else 
   {
-    
-    digitalWrite(ledgreenPin, LOW);
-    
-    file.close();
+    Serial.println("low");
+    digitalWrite(ledgreenPin, LOW);   
     digitalWrite(ledredPin, HIGH);
     delay(1000*60*10);//czekaj 10 minut
-    file = SD.open("file.txt", FILE_WRITE);
+    
+    
 
     
   }

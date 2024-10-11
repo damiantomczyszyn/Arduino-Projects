@@ -13,12 +13,12 @@
 - Drugi pin każdej diody → GND
 
 ### Przycisk:
-- Jeden pin przycisku → Arduino Pin 2
+- Jeden pin przycisku → Arduino Pin 2 podciągany do VCC
 - Drugi pin przycisku → GND
 
 ### Moduł GPS (SoftwareSerial):
-- RX (odbiór danych) → Arduino Pin 4
-- TX (transmisja danych) → Arduino Pin 3
+- RX (odbiór danych) → Arduino Pin 3
+- TX (transmisja danych) → Arduino Pin 4
 - Zasilanie modułu GPS:
   - VCC → 5V
   - GND → GND
