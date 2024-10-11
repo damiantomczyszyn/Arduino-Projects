@@ -12,6 +12,7 @@ void resetArduino() {
 const int buttonPin = 2;  // the number of the pushbutton pin
 const int ledgreenPin = 6;    // the number of the LED pin
 const int ledredPin = 7;    // the number of the LED pin
+unsigned long startMilis = 0;
 
 
 int buttonState = 0; 
@@ -23,6 +24,7 @@ File file;
 
 SoftwareSerial Dta(4,3);
 void setup() {
+  startMilis = millis();
  
 Serial.begin(9600);
 Dta.begin(9600);
@@ -66,12 +68,16 @@ Serial.print("Initializing SD card...");
 }
 bool raz = true;
 void loop() {
-
+  unsigned long currentMillis = millis();
+  
   if(raz){
-    delay(500);
-    //file = SD.open("file.txt", FILE_WRITE);
-    delay(500);
     raz=false;
+
+    file = SD.open("file.txt", FILE_WRITE);
+    file.print("Start: ") ;   
+    file.println(String(currentMillis));   
+    file.flush();
+    file.close();
   }
   // put your main code here, to run repeatedly:
   buttonState = digitalRead(buttonPin);
@@ -88,7 +94,7 @@ void loop() {
     
     while (Dta.available() > 0) {
       byte gpsData = Dta.read();
-      Serial.write(gpsData);
+      //Serial.write(gpsData);
       
       
       file.write(gpsData);
@@ -112,7 +118,32 @@ void loop() {
     Serial.println("low");
     digitalWrite(ledgreenPin, LOW);   
     digitalWrite(ledredPin, HIGH);
-    delay(1000*60*10);//czekaj 10 minut
+
+    
+
+
+    file = SD.open("file.txt", FILE_WRITE);
+    file.println(); 
+    file.print("Stop: ") ;   
+    file.println(String(currentMillis)); 
+    file.println(); 
+    file.write((byte)'\n'); 
+
+
+    file.flush();
+    file.close();
+    Serial.println("zapisane");
+    delay(5000);//czekaj 30 minut
+
+
+    file = SD.open("file.txt", FILE_WRITE);
+    Serial.println("dzialam-dalej");
+    file.print("dzialam-dalej: ") ;   
+    file.println(String(millis())); 
+    file.println(); 
+
+    file.flush();
+    file.close();
     
     
 
