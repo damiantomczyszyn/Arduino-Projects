@@ -13,7 +13,8 @@ const int buttonPin = 2;  // the number of the pushbutton pin
 const int ledgreenPin = 6;    // the number of the LED pin
 const int ledredPin = 7;    // the number of the LED pin
 unsigned long startMilis = 0;
-
+unsigned long previousMillis = 0;
+unsigned long interval = 60000;  // Co minutę (60,000 ms)
 
 int buttonState = 0; 
 String gpsDataText ="";
@@ -76,32 +77,45 @@ void loop() {
     file = SD.open("file.txt", FILE_WRITE);
     file.print("Start: ") ;   
     file.println(String(currentMillis));   
-    file.flush();
-    file.close();
   }
-  // put your main code here, to run repeatedly:
+
+  
   buttonState = digitalRead(buttonPin);
-  if (buttonState == HIGH) {
-    
+  if (buttonState == HIGH) {    
     digitalWrite(ledgreenPin, HIGH);
     digitalWrite(ledredPin, LOW);
 
-   file = SD.open("file.txt", FILE_WRITE);
-  
-  if (file) {
+    if (file) {
+       // Wywołanie flush() co kilka zapisów (np. co sekundę)
+      if (currentMillis - previousMillis >= 1000) {
+        file.flush();  // Zapisz bufor na kartę SD
+        previousMillis = currentMillis;
+      }
     
 
+  // Zamykanie pliku co minutę i ponowne otwarcie
+  if (currentMillis - previousMillis >= interval) {
+      
+        file.println("Auto-save at " + String(currentMillis));
+        file.close();
+    
+
+    // Ponowne otwarcie pliku
+      file = SD.open("file.txt", FILE_WRITE);
+      if (!file) {
+        Serial.println("Błąd otwarcia pliku.");
+        //resetArduino()
+        delay(10000000);        
+      }
+  }
     
     while (Dta.available() > 0) {
-      byte gpsData = Dta.read();
-      //Serial.write(gpsData);
-      
-      
+
+      byte gpsData = Dta.read();     
       file.write(gpsData);
       gpsDataText+=(char)gpsData;
       
       }
-      file.close();
       gpsDataText.trim();
   if (gpsDataText.length() > 0) {  // trim() usuwa białe znaki (spacje, nowe linie)
     Serial.println(gpsDataText);  // Wyświetla zebrane dane GPS w postaci tekstu
@@ -117,12 +131,9 @@ void loop() {
   {
     Serial.println("low");
     digitalWrite(ledgreenPin, LOW);   
-    digitalWrite(ledredPin, HIGH);
-
-    
+    digitalWrite(ledredPin, HIGH);    
 
 
-    file = SD.open("file.txt", FILE_WRITE);
     file.println(); 
     file.print("Stop: ") ;   
     file.println(String(currentMillis)); 
@@ -133,21 +144,17 @@ void loop() {
     file.flush();
     file.close();
     Serial.println("zapisane");
-    delay(5000);//czekaj 30 minut
+    Serial.println(currentMillis);
+  
+    delay(10000);//czekaj 30 minut
 
 
     file = SD.open("file.txt", FILE_WRITE);
-    Serial.println("dzialam-dalej");
+    Serial.println("otworzylem-i-dzialam-dalej");
     file.print("dzialam-dalej: ") ;   
     file.println(String(millis())); 
     file.println(); 
 
-    file.flush();
-    file.close();
-    
-    
-
-    
   }
 }
 
