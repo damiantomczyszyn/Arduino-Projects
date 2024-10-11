@@ -136,9 +136,12 @@ void loop() {
 
     file.println(); 
     file.print("Stop: ") ;   
-    file.println(String(currentMillis)); 
+    file.println(currentMillis); 
     file.println(); 
-    file.write((byte)'\n'); 
+    //file.write((byte)'\n'); 
+    // Zapis liczby jako ciągu znaków
+    //file.write(String(currentMillis).c_str());
+    //file.write((byte)'\n'); 
 
 
     file.flush();
