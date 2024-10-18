@@ -3,6 +3,8 @@
 #include <SD.h>
 #include <avr/wdt.h>
 
+
+
 void resetArduino() {
   wdt_enable(WDTO_15MS); 
   while (1) {} 
@@ -149,7 +151,17 @@ void loop() {
     Serial.println("zapisane");
     Serial.println(currentMillis);
   
-    delay(10000);//czekaj 30 minut
+    delay(300000);//czekaj 5min
+   while (!SD.begin(10)) { // sprawdz jak tam karta sd
+     Serial.println("initialization failed! 2");
+     delay(500);
+    }
+    if (!SD.exists("file.txt")) {
+    Serial.println("restart file not exist");
+    resetArduino();
+    }
+   Serial.println("initialization done! 2");
+
 
 
     file = SD.open("file.txt", FILE_WRITE);
