@@ -114,7 +114,7 @@ void OnDataRecv(const esp_now_recv_info* sender, const uint8_t* incomingDataPtr,
           Serial.print("Wciśnięty klawisz: osiem");
           if(silnikKoszacy==1)
           {
-            silnikKoszacy==0;
+            silnikKoszacy=0;
           }
           else{
             silnikKoszacy=1;
