@@ -37,8 +37,8 @@ void OnDataRecv(const esp_now_recv_info* sender, const uint8_t* incomingDataPtr,
         if(incomingData.button=='1')
         {
           Serial.print("Wciśnięty klawisz: jeden");
-          if(lewySilnikSpeed-11 > 0)
-          lewySilnikSpeed -=10;
+          if(lewySilnikSpeed+11 < 255)
+          lewySilnikSpeed +=10;
         }
 
 
