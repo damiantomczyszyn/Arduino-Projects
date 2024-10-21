@@ -153,6 +153,7 @@ void setup() {
     
 
     delay(1000);  // Daj czas na otwarcie portu szeregowego
+    Serial.println("Start");
 
     // Inicjalizacja ESP-NOW
     WiFi.mode(WIFI_STA);
