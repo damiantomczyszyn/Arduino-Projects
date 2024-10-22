@@ -27,8 +27,8 @@ typedef struct struct_message {
 } struct_message;
 
 // Adres MAC odbiorcy
-uint8_t receiverAddress[] = {0xb0, 0xa7, 0x32, 0x14, 0x4b, 0x1c};
-
+//uint8_t receiverAddress[] = {0xb0, 0xa7, 0x32, 0x14, 0x4b, 0x1c};//spalonyESP
+uint8_t receiverAddress[] = {0xd0, 0xef, 0x76, 0x56, 0xee, 0xe4};//nowy 38pinowy
 // Struktura wiadomości
 struct_message myData;
 
